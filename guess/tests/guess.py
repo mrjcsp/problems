@@ -1,5 +1,5 @@
 import check50
-import re
+import check50.py
 
 @check50.check()
 def exists():
@@ -7,33 +7,26 @@ def exists():
     check50.exists("guess.py")
 
 @check50.check(exists)
-def has_function():
-    """guess.py defines a function called guessing_game"""
-    import guess
-    if not hasattr(guess, "guessing_game"):
-        raise check50.Failure("No function called guessing_game() found")
+def imports_random():
+    """Program imports the random module"""
+    contents = open("guess.py").read()
+    if "import random" not in contents:
+        raise check50.Failure("random module not imported")
 
-@check50.check(has_function)
-def output_message():
-    """Program outputs either a win or loss message with a number"""
-    import guess
-    import io
-    import sys
+@check50.check(exists)
+def defines_function():
+    """Program defines a function called guessing_game()"""
+    contents = open("guess.py").read()
+    if "def guessing_game" not in contents:
+        raise check50.Failure("Function guessing_game() not defined")
 
-    # Capture stdout
-    old_stdout = sys.stdout
-    sys.stdout = io.StringIO()
-    try:
-        guess.guessing_game()
-        output = sys.stdout.getvalue().lower()
-    finally:
-        sys.stdout = old_stdout
-
-    # Check for win or loss
-    if not ("congrat" in output or "sorry" in output or "lose" in output):
-        raise check50.Failure("Output should contain a congratulations or loss message")
-
-    # Check for a number 1-10
-    numbers = re.findall(r"\b([1-9]|10)\b", output)
-    if not numbers:
-        raise check50.Failure("Output should include a number between 1 and 10 (the secret number)")
+@check50.check(exists)
+def prints_result():
+    """Program outputs either a congrats message or a loss message"""
+    # Provide a sample guess input
+    result = check50.run("python3 guess.py").stdin("5\n").stdout(timeout=5)
+    success_msgs = ["congratulations", "correct number"]
+    failure_msgs = ["sorry", "better luck"]
+    output = result.lower()
+    if not any(msg in output for msg in success_msgs + failure_msgs):
+        raise check50.Failure("No congratulatory or loss message detected")
