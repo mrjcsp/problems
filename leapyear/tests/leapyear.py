@@ -1,8 +1,8 @@
-rimport check50
+import check50
 
 @check50.check()
 def exists():
-    """leap.py exists"""
+    """leapyear.py exists"""
     check50.exists("leap.py")
 
 @check50.check(exists)
