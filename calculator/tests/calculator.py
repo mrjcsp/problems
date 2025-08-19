@@ -1,5 +1,5 @@
 import check50
-import check50.py
+import re
 
 @check50.check()
 def exists():
@@ -7,47 +7,39 @@ def exists():
     check50.exists("calculator.py")
 
 @check50.check(exists)
-def defines_add():
-    """Program defines a function called add(num1, num2)"""
-    contents = open("calculator.py").read()
-    if "def add(" not in contents:
-        raise check50.Failure("Function add() not defined")
+def functions_defined():
+    """Program defines add, subtract, multiply, and divide functions with two parameters"""
+    source = check50.read("calculator.py")
+    for func in ["add", "subtract", "multiply", "divide"]:
+        # Use regex to check function signature with exactly two parameters
+        pattern = rf"def {func}\(\s*\w+\s*,\s*\w+\s*\)"
+        if not re.search(pattern, source):
+            raise check50.Failure(f"{func}() not defined with two parameters")
 
 @check50.check(exists)
-def defines_subtract():
-    """Program defines a function called subtract(num1, num2)"""
-    contents = open("calculator.py").read()
-    if "def subtract(" not in contents:
-        raise check50.Failure("Function subtract() not defined")
+def addition():
+    """Program can perform addition correctly"""
+    out = check50.run("python3 calculator.py").stdin("1\n3\n7\n\n5\n").stdout()
+    if "Result: 10" not in out and "Result: 10.0" not in out:
+        raise check50.Failure("Addition result not correct")
 
 @check50.check(exists)
-def defines_multiply():
-    """Program defines a function called multiply(num1, num2)"""
-    contents = open("calculator.py").read()
-    if "def multiply(" not in contents:
-        raise check50.Failure("Function multiply() not defined")
+def subtraction():
+    """Program can perform subtraction correctly"""
+    out = check50.run("python3 calculator.py").stdin("2\n10\n4\n\n5\n").stdout()
+    if "Result: 6" not in out and "Result: 6.0" not in out:
+        raise check50.Failure("Subtraction result not correct")
 
 @check50.check(exists)
-def defines_divide():
-    """Program defines a function called divide(num1, num2)"""
-    contents = open("calculator.py").read()
-    if "def divide(" not in contents:
-        raise check50.Failure("Function divide() not defined")
+def multiplication():
+    """Program can perform multiplication correctly"""
+    out = check50.run("python3 calculator.py").stdin("3\n5\n2\n\n5\n").stdout()
+    if "Result: 10" not in out and "Result: 10.0" not in out:
+        raise check50.Failure("Multiplication result not correct")
 
 @check50.check(exists)
-def defines_quit():
-    """Program defines a function called quit_program() or similar"""
-    contents = open("calculator.py").read().lower()
-    if "def quit" not in contents:
-        raise check50.Failure("Function to quit the program not defined")
-
-@check50.check(exists)
-def runs_operations():
-    """Program can perform an addition and subtraction"""
-    # We'll run the program and provide sample inputs for testing addition and subtraction
-    inputs = "1\n5\n3\n5\n0\n"  # Menu choice 1=add, then 5,3; choice 2=subtract, then 5,0
-    output = check50.run("python3 calculator.py").stdin(inputs).stdout(timeout=5).lower()
-    if "8" not in output:
-        raise check50.Failure("Addition result not displayed correctly")
-    if "5" not in output:
-        raise check50.Failure("Subtraction result not displayed correctly")
+def division():
+    """Program can perform division correctly"""
+    out = check50.run("python3 calculator.py").stdin("4\n8\n2\n\n5\n").stdout()
+    if "Result: 4" not in out and "Result: 4.0" not in out:
+        raise check50.Failure("Division result not correct")
