@@ -1,4 +1,4 @@
-import check50
+rimport check50
 
 @check50.check()
 def exists():
