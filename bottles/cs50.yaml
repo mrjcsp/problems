@@ -1,2 +1,2 @@
 check50:
-  checks: tests/clickbait.py
+  checks: tests/bottles.py
