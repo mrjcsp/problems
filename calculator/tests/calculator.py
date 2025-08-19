@@ -9,9 +9,10 @@ def exists():
 @check50.check(exists)
 def functions_defined():
     """Program defines add, subtract, multiply, and divide functions with two parameters"""
-    source = check50.read("calculator.py")
+    with open("calculator.py") as f:
+        source = f.read()
     for func in ["add", "subtract", "multiply", "divide"]:
-        # Use regex to check function signature with exactly two parameters
+        # Check function signature with exactly two parameters
         pattern = rf"def {func}\(\s*\w+\s*,\s*\w+\s*\)"
         if not re.search(pattern, source):
             raise check50.Failure(f"{func}() not defined with two parameters")
