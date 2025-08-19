@@ -1,2 +1,2 @@
 check50:
-  checks: tests/bottles.py
+  checks: checks/bottles.py
