@@ -33,25 +33,26 @@ def headline3_exists():
     if "headline3" not in func_names:
         raise check50.Failure("Function 'headline3' not found in clickbait.py")
 
-@check50.check(headline1_exists, headline2_exists, headline3_exists)
-def headlines_contain_inputs():
-    """Program prints three headlines containing the correct inputs"""
-    
-    # Provide all inputs at once (2 per headline)
+@check50.check([headline1_exists, headline2_exists, headline3_exists])
+def headline1_output():
+    """First headline prints both inputs"""
     inputs = "Alice\npickles\n7\ncats\nParis\nhaunted\n"
-
-    # Run the program
     output = check50.run("python3 clickbait.py").stdin(inputs).stdout()
+    if "Alice" not in output or "pickles" not in output:
+        raise check50.Failure("First headline does not contain both inputs")
 
-    # Each headline has its two inputs
-    headlines_inputs = [
-        ["Alice", "pickles"],
-        ["7", "cats"],
-        ["Paris", "haunted"]
-    ]
+@check50.check([headline1_exists, headline2_exists, headline3_exists])
+def headline2_output():
+    """Second headline prints both inputs"""
+    inputs = "Alice\npickles\n7\ncats\nParis\nhaunted\n"
+    output = check50.run("python3 clickbait.py").stdin(inputs).stdout()
+    if "7" not in output or "cats" not in output:
+        raise check50.Failure("Second headline does not contain both inputs")
 
-    # Check that each input appears somewhere in the output
-    for pair in headlines_inputs:
-        for inp in pair:
-            if inp not in output:
-                raise check50.Failure(f"'{inp}' not found in headline output")
+@check50.check([headline1_exists, headline2_exists, headline3_exists])
+def headline3_output():
+    """Third headline prints both inputs"""
+    inputs = "Alice\npickles\n7\ncats\nParis\nhaunted\n"
+    output = check50.run("python3 clickbait.py").stdin(inputs).stdout()
+    if "Paris" not in output or "haunted" not in output:
+        raise check50.Failure("Third headline does not contain both inputs")
