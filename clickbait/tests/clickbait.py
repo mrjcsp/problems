@@ -7,52 +7,39 @@ def exists():
     check50.exists("clickbait.py")
 
 @check50.check(exists)
-def headline1_exists():
-    """clickbait.py defines the function headline1"""
+def functions_exist():
+    """clickbait.py defines the required functions"""
     with open("clickbait.py") as f:
         tree = ast.parse(f.read(), filename="clickbait.py")
+    
+    # Collect all function names
     func_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
-    if "headline1" not in func_names:
-        raise check50.Failure("Function 'headline1' not found in clickbait.py")
+    
+    required_funcs = ["headline1", "headline2", "headline3"]
+    
+    for func in required_funcs:
+        if func not in func_names:
+            raise check50.Failure(f"Function '{func}' not found in clickbait.py")
 
-@check50.check(exists)
-def headline2_exists():
-    """clickbait.py defines the function headline2"""
-    with open("clickbait.py") as f:
-        tree = ast.parse(f.read(), filename="clickbait.py")
-    func_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
-    if "headline2" not in func_names:
-        raise check50.Failure("Function 'headline2' not found in clickbait.py")
-
-@check50.check(exists)
-def headline3_exists():
-    """clickbait.py defines the function headline3"""
-    with open("clickbait.py") as f:
-        tree = ast.parse(f.read(), filename="clickbait.py")
-    func_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)]
-    if "headline3" not in func_names:
-        raise check50.Failure("Function 'headline3' not found in clickbait.py")
-
-@check50.check([headline1_exists, headline2_exists, headline3_exists])
-def headline1_output():
-    """First headline prints both inputs"""
+@check50.check(functions_exist)
+def headlines_contain_inputs():
+    """Program prints three headlines containing the correct inputs"""
+    
+    # Provide all inputs at once (2 per headline)
     inputs = "Alice\npickles\n7\ncats\nParis\nhaunted\n"
-    output = check50.run("python3 clickbait.py").stdin(inputs).stdout()
-    if "Alice" not in output or "pickles" not in output:
-        raise check50.Failure("First headline does not contain both inputs")
 
-@check50.check([headline1_exists, headline2_exists, headline3_exists])
-def headline2_output():
-    """Second headline prints both inputs"""
-    inputs = "Alice\npickles\n7\ncats\nParis\nhaunted\n"
+    # Run the program
     output = check50.run("python3 clickbait.py").stdin(inputs).stdout()
-    if "7" not in output or "cats" not in output:
-        raise check50.Failure("Second headline does not contain both inputs")
 
-@check50.check([headline1_exists, headline2_exists, headline3_exists])
-def headline3_output():
-    """Third headline prints both inputs"""
-    inputs = "Alice\npickles\n7\ncats\nParis\nhaunted\n"
-    output = check50.run("python3 clickbait.py").stdin(inputs).stdout()
-    if "Paris" not in output or "haunted" not in output:
-        raise check50.Failure("Third headline does not contain both inputs")
+    # Each headline has its two inputs
+    headlines_inputs = [
+        ["Alice", "pickles"],
+        ["7", "cats"],
+        ["Paris", "haunted"]
+    ]
+
+    # Check that each input appears somewhere in the output
+    for pair in headlines_inputs:
+        for inp in pair:
+            if inp not in output:
+                raise check50.Failure(f"'{inp}' not found in headline output")
