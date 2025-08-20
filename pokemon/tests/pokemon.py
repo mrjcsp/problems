@@ -30,15 +30,30 @@ def display_function():
 @check50.check(exists)
 def level_up_training():
     """Training increases pokemon_level by 1"""
-    # Simulate training input
-    output = check50.run("python3 pokemon.py").stdin("1\n5\n3\n").stdout()
-    # Should contain increased level
-    if "6" not in output and "level: 6" not in output:
+    output = check50.run("python3 pokemon.py").stdin("1\n3\n3\n").stdout()
+    # Level should increase by 1
+    if "Level: 1" not in output:
         raise check50.Failure("pokemon_level did not increase by 1 after training")
+
+@check50.check(exists)
+def evolution_first_stage():
+    """Pokemon evolves at level 5"""
+    # Simulate training to level 5
+    output = check50.run("python3 pokemon.py").stdin("1\n1\n1\n1\n1\n3\n").stdout()
+    if "Evolved to Stage 1" not in output and "Level: 5" not in output:
+        raise check50.Failure("Pokemon did not evolve at level 5")
+
+@check50.check(exists)
+def evolution_second_stage():
+    """Pokemon evolves at level 10"""
+    # Simulate training to level 10
+    output = check50.run("python3 pokemon.py").stdin("1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n3\n").stdout()
+    if "Evolved to Stage 2" not in output and "Level: 10" not in output:
+        raise check50.Failure("Pokemon did not evolve at level 10")
 
 @check50.check(exists)
 def display_info():
     """Display function prints pokemon name and level"""
     output = check50.run("python3 pokemon.py").stdin("3\n").stdout()
-    if "pokemon_name" not in output and "level" not in output:
+    if "pokemon_name" not in output and "Level" not in output:
         raise check50.Failure("display_pokemon did not show name or level")
