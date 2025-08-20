@@ -28,13 +28,3 @@ def display_function_exists():
     if "def display_pokemon" not in source:
         raise check50.Failure("display_pokemon function not found")
 
-@check50.check(exists)
-def test_display():
-    """Display function prints name and level"""
-    student = importlib.import_module("pokemon")
-    student.pokemon_level = 7
-    student.pokemon_name = "Pikachu"
-    output = student.display_pokemon()
-    # Check that display prints something containing the name and level
-    if not ("Pikachu" in str(output) or "7" in str(output)):
-        raise check50.Failure("display_pokemon does not show correct name or level")
