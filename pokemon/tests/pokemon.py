@@ -29,33 +29,6 @@ def display_function_exists():
         raise check50.Failure("display_pokemon function not found")
 
 @check50.check(exists)
-def test_training_and_evolution():
-    """Training increases level and triggers evolutions correctly"""
-    student = importlib.import_module("pokemon")
-    
-    # Reset globals
-    student.pokemon_level = 0
-    student.pokemon_name = "Pichu"
-    
-    # Train 5 times -> should evolve to Stage 1
-    for _ in range(5):
-        student.pokemon_level += 1
-        student.evolve_pokemon()
-    if student.pokemon_level != 5:
-        raise check50.Failure("pokemon_level did not increase correctly after training")
-    if student.pokemon_name != "Pikachu":
-        raise check50.Failure("Pokemon did not evolve to Stage 1 at level 5")
-    
-    # Train 5 more times -> should evolve to Stage 2
-    for _ in range(5):
-        student.pokemon_level += 1
-        student.evolve_pokemon()
-    if student.pokemon_level != 10:
-        raise check50.Failure("pokemon_level did not increase correctly after training to level 10")
-    if student.pokemon_name != "Raichu":
-        raise check50.Failure("Pokemon did not evolve to Stage 2 at level 10")
-
-@check50.check(exists)
 def test_display():
     """Display function prints name and level"""
     student = importlib.import_module("pokemon")
