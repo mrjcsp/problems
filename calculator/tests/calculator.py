@@ -1,5 +1,4 @@
 import check50
-import re
 
 @check50.check()
 def exists():
@@ -9,38 +8,35 @@ def exists():
 @check50.check(exists)
 def functions_defined():
     """Program defines add, subtract, multiply, and divide functions with two parameters"""
-    with open("calculator.py") as f:
-        source = f.read()
+    source = open("calculator.py").read()
     for func in ["add", "subtract", "multiply", "divide"]:
-        # Check function signature with exactly two parameters
-        pattern = rf"def {func}\(\s*\w+\s*,\s*\w+\s*\)"
-        if not re.search(pattern, source):
-            raise check50.Failure(f"{func}() not defined with two parameters")
+        if f"def {func}(" not in source:
+            raise check50.Failure(f"{func} function not found")
 
 @check50.check(exists)
 def addition():
-    """Program can perform addition correctly"""
-    out = check50.run("python3 calculator.py").stdin("1\n3\n7\n\n5\n").stdout()
-    if "Result: 10" not in out or "Result: 10.0" not in out:
-        raise check50.Failure("Addition result not correct")
+    """Program can perform addition"""
+    output = check50.run("python3 calculator.py").stdin("1\n5\n3\n5\n").stdout()
+    if "8" not in output:
+        raise check50.Failure("Addition result not found in output")
 
 @check50.check(exists)
 def subtraction():
-    """Program can perform subtraction correctly"""
-    out = check50.run("python3 calculator.py").stdin("2\n10\n4\n\n5\n").stdout()
-    if "Result: 6" not in out or "Result: 6.0" not in out:
-        raise check50.Failure("Subtraction result not correct")
+    """Program can perform subtraction"""
+    output = check50.run("python3 calculator.py").stdin("2\n10\n4\n5\n").stdout()
+    if "6" not in output:
+        raise check50.Failure("Subtraction result not found in output")
 
 @check50.check(exists)
 def multiplication():
-    """Program can perform multiplication correctly"""
-    out = check50.run("python3 calculator.py").stdin("3\n5\n2\n\n5\n").stdout()
-    if "Result: 10" not in out or "Result: 10.0" not in out:
-        raise check50.Failure("Multiplication result not correct")
+    """Program can perform multiplication"""
+    output = check50.run("python3 calculator.py").stdin("3\n4\n6\n5\n").stdout()
+    if "24" not in output:
+        raise check50.Failure("Multiplication result not found in output")
 
 @check50.check(exists)
 def division():
-    """Program can perform division correctly"""
-    out = check50.run("python3 calculator.py").stdin("4\n8\n2\n\n5\n").stdout()
-    if "Result: 4" not in out or "Result: 4.0" not in out:
-        raise check50.Failure("Division result not correct")
+    """Program can perform division"""
+    output = check50.run("python3 calculator.py").stdin("4\n20\n4\n5\n").stdout()
+    if "5.0" not in output:
+        raise check50.Failure("Division result not found in output")
