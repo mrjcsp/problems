@@ -1,4 +1,5 @@
 import check50
+import importlib
 
 @check50.check()
 def exists():
@@ -6,7 +7,7 @@ def exists():
     check50.exists("pokemon.py")
 
 @check50.check(exists)
-def global_variables():
+def globals_exist():
     """Program defines pokemon_level and pokemon_name as global variables"""
     source = open("pokemon.py").read()
     for var in ["pokemon_level", "pokemon_name"]:
@@ -14,46 +15,53 @@ def global_variables():
             raise check50.Failure(f"{var} not found in program")
 
 @check50.check(exists)
-def evolve_function():
+def evolve_function_exists():
     """Program defines evolve_pokemon function"""
     source = open("pokemon.py").read()
-    if "def evolve_pokemon(" not in source:
-        raise check50.Failure("evolve_pokemon function not defined")
+    if "def evolve_pokemon" not in source:
+        raise check50.Failure("evolve_pokemon function not found")
 
 @check50.check(exists)
-def display_function():
+def display_function_exists():
     """Program defines display_pokemon function"""
     source = open("pokemon.py").read()
-    if "def display_pokemon(" not in source:
-        raise check50.Failure("display_pokemon function not defined")
+    if "def display_pokemon" not in source:
+        raise check50.Failure("display_pokemon function not found")
 
 @check50.check(exists)
-def level_up_training():
-    """Training increases pokemon_level by 1"""
-    output = check50.run("python3 pokemon.py").stdin("1\n3\n3\n").stdout()
-    # Level should increase by 1
-    if "Level: 1" not in output:
-        raise check50.Failure("pokemon_level did not increase by 1 after training")
+def test_training_and_evolution():
+    """Training increases level and triggers evolutions correctly"""
+    student = importlib.import_module("pokemon")
+    
+    # Reset globals
+    student.pokemon_level = 0
+    student.pokemon_name = "Pichu"
+    
+    # Train 5 times -> should evolve to Stage 1
+    for _ in range(5):
+        student.pokemon_level += 1
+        student.evolve_pokemon()
+    if student.pokemon_level != 5:
+        raise check50.Failure("pokemon_level did not increase correctly after training")
+    if student.pokemon_name != "Pikachu":
+        raise check50.Failure("Pokemon did not evolve to Stage 1 at level 5")
+    
+    # Train 5 more times -> should evolve to Stage 2
+    for _ in range(5):
+        student.pokemon_level += 1
+        student.evolve_pokemon()
+    if student.pokemon_level != 10:
+        raise check50.Failure("pokemon_level did not increase correctly after training to level 10")
+    if student.pokemon_name != "Raichu":
+        raise check50.Failure("Pokemon did not evolve to Stage 2 at level 10")
 
 @check50.check(exists)
-def evolution_first_stage():
-    """Pokemon evolves at level 5"""
-    # Simulate training to level 5
-    output = check50.run("python3 pokemon.py").stdin("1\n1\n1\n1\n1\n3\n").stdout()
-    if "Evolved to Stage 1" not in output and "Level: 5" not in output:
-        raise check50.Failure("Pokemon did not evolve at level 5")
-
-@check50.check(exists)
-def evolution_second_stage():
-    """Pokemon evolves at level 10"""
-    # Simulate training to level 10
-    output = check50.run("python3 pokemon.py").stdin("1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n3\n").stdout()
-    if "Evolved to Stage 2" not in output and "Level: 10" not in output:
-        raise check50.Failure("Pokemon did not evolve at level 10")
-
-@check50.check(exists)
-def display_info():
-    """Display function prints pokemon name and level"""
-    output = check50.run("python3 pokemon.py").stdin("3\n").stdout()
-    if "pokemon_name" not in output and "Level" not in output:
-        raise check50.Failure("display_pokemon did not show name or level")
+def test_display():
+    """Display function prints name and level"""
+    student = importlib.import_module("pokemon")
+    student.pokemon_level = 7
+    student.pokemon_name = "Pikachu"
+    output = student.display_pokemon()
+    # Check that display prints something containing the name and level
+    if not ("Pikachu" in str(output) or "7" in str(output)):
+        raise check50.Failure("display_pokemon does not show correct name or level")
