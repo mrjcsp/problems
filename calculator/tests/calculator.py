@@ -21,26 +21,26 @@ def functions_defined():
 def addition():
     """Program can perform addition correctly"""
     out = check50.run("python3 calculator.py").stdin("1\n3\n7\n\n5\n").stdout()
-    if "Result: 10" not in out and "Result: 10.0" not in out:
+    if "Result: 10" not in out or "Result: 10.0" not in out:
         raise check50.Failure("Addition result not correct")
 
 @check50.check(exists)
 def subtraction():
     """Program can perform subtraction correctly"""
     out = check50.run("python3 calculator.py").stdin("2\n10\n4\n\n5\n").stdout()
-    if "Result: 6" not in out and "Result: 6.0" not in out:
+    if "Result: 6" not in out or "Result: 6.0" not in out:
         raise check50.Failure("Subtraction result not correct")
 
 @check50.check(exists)
 def multiplication():
     """Program can perform multiplication correctly"""
     out = check50.run("python3 calculator.py").stdin("3\n5\n2\n\n5\n").stdout()
-    if "Result: 10" not in out and "Result: 10.0" not in out:
+    if "Result: 10" not in out or "Result: 10.0" not in out:
         raise check50.Failure("Multiplication result not correct")
 
 @check50.check(exists)
 def division():
     """Program can perform division correctly"""
     out = check50.run("python3 calculator.py").stdin("4\n8\n2\n\n5\n").stdout()
-    if "Result: 4" not in out and "Result: 4.0" not in out:
+    if "Result: 4" not in out or "Result: 4.0" not in out:
         raise check50.Failure("Division result not correct")
