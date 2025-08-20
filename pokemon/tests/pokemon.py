@@ -1,5 +1,4 @@
 import check50
-import importlib
 
 @check50.check()
 def exists():
@@ -31,37 +30,45 @@ def display_function_exists():
 @check50.check(exists)
 def test_training_and_evolution():
     """Training increases level and triggers evolutions correctly"""
-    student = importlib.import_module("pokemon")
-    
+    namespace = {}
+    with open("pokemon.py") as f:
+        code = f.read()
+    exec(code, namespace)
+
     # Reset globals
-    student.pokemon_level = 0
-    student.pokemon_name = "Pichu"
-    
-    # Train 5 times -> should evolve to Stage 1
+    namespace["pokemon_level"] = 0
+    namespace["pokemon_name"] = "Pichu"
+
+    # Train 5 times -> evolve to Stage 1
     for _ in range(5):
-        student.pokemon_level += 1
-        student.evolve_pokemon()
-    if student.pokemon_level != 5:
+        namespace["pokemon_level"] += 1
+        namespace["evolve_pokemon"]()
+    if namespace["pokemon_level"] != 5:
         raise check50.Failure("pokemon_level did not increase correctly after training")
-    if student.pokemon_name != "Pikachu":
+    if namespace["pokemon_name"] != "Pikachu":
         raise check50.Failure("Pokemon did not evolve to Stage 1 at level 5")
-    
-    # Train 5 more times -> should evolve to Stage 2
+
+    # Train 5 more times -> evolve to Stage 2
     for _ in range(5):
-        student.pokemon_level += 1
-        student.evolve_pokemon()
-    if student.pokemon_level != 10:
+        namespace["pokemon_level"] += 1
+        namespace["evolve_pokemon"]()
+    if namespace["pokemon_level"] != 10:
         raise check50.Failure("pokemon_level did not increase correctly after training to level 10")
-    if student.pokemon_name != "Raichu":
+    if namespace["pokemon_name"] != "Raichu":
         raise check50.Failure("Pokemon did not evolve to Stage 2 at level 10")
 
 @check50.check(exists)
 def test_display():
     """Display function prints name and level"""
-    student = importlib.import_module("pokemon")
-    student.pokemon_level = 7
-    student.pokemon_name = "Pikachu"
-    output = student.display_pokemon()
+    namespace = {}
+    with open("pokemon.py") as f:
+        code = f.read()
+    exec(code, namespace)
+
+    namespace["pokemon_level"] = 7
+    namespace["pokemon_name"] = "Pikachu"
+
+    output = namespace["display_pokemon"]()
     # Check that display prints something containing the name and level
     if not ("Pikachu" in str(output) or "7" in str(output)):
         raise check50.Failure("display_pokemon does not show correct name or level")
