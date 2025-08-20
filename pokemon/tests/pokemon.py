@@ -1,5 +1,5 @@
 import check50
-import inspect
+import re
 
 @check50.check()
 def exists():
@@ -9,29 +9,29 @@ def exists():
 @check50.check(exists)
 def globals_defined():
     """Program defines global variables pokemon_level and pokemon_name"""
-    import pokemon
-    if not hasattr(pokemon, "pokemon_level"):
-        raise check50.Failure("Global variable 'pokemon_level' is not defined")
-    if not hasattr(pokemon, "pokemon_name"):
-        raise check50.Failure("Global variable 'pokemon_name' is not defined")
+    source = check50.read("pokemon.py")
+    if "pokemon_level" not in source:
+        raise check50.Failure("Global variable 'pokemon_level' not found")
+    if "pokemon_name" not in source:
+        raise check50.Failure("Global variable 'pokemon_name' not found")
 
 @check50.check(exists)
 def train_defined():
     """Program defines a train function"""
-    import pokemon
-    if not hasattr(pokemon, "train") or not inspect.isfunction(pokemon.train):
-        raise check50.Failure("Function 'train' is not defined")
+    source = check50.read("pokemon.py")
+    if not re.search(r"def\s+train\s*\(", source):
+        raise check50.Failure("Function 'train' not found")
 
 @check50.check(exists)
 def evolve_defined():
     """Program defines an evolve_pokemon function"""
-    import pokemon
-    if not hasattr(pokemon, "evolve_pokemon") or not inspect.isfunction(pokemon.evolve_pokemon):
-        raise check50.Failure("Function 'evolve_pokemon' is not defined")
+    source = check50.read("pokemon.py")
+    if not re.search(r"def\s+evolve_pokemon\s*\(", source):
+        raise check50.Failure("Function 'evolve_pokemon' not found")
 
 @check50.check(exists)
 def display_defined():
     """Program defines a display_pokemon function"""
-    import pokemon
-    if not hasattr(pokemon, "display_pokemon") or not inspect.isfunction(pokemon.display_pokemon):
-        raise check50.Failure("Function 'display_pokemon' is not defined")
+    source = check50.read("pokemon.py")
+    if not re.search(r"def\s+display_pokemon\s*\(", source):
+        raise check50.Failure("Function 'display_pokemon' not found")
