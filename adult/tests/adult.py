@@ -9,7 +9,9 @@ def exists():
 @check50.check(exists)
 def function_defined():
     """Program defines a function is_adult(age)"""
-    check50.py.import_("adult").is_adult
+    student = check50.py.import_("adult")
+    if not hasattr(student, "is_adult"):
+        raise check50.Failure("Function is_adult not defined")
 
 @check50.check(function_defined)
 def under_18_returns_false():
