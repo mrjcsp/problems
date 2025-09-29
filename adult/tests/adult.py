@@ -1,5 +1,4 @@
 import check50
-import check50.py
 
 @check50.check()
 def exists():
@@ -9,27 +8,36 @@ def exists():
 @check50.check(exists)
 def function_defined():
     """Program defines a function is_adult(age)"""
-    student = check50.py.import_("adult")
-    if not hasattr(student, "is_adult"):
+    namespace = {}
+    exec(open("adult.py").read(), namespace)
+    if "is_adult" not in namespace:
         raise check50.Failure("Function is_adult not defined")
 
 @check50.check(function_defined)
-def under_18_returns_false():
+def test_under_18():
     """is_adult(17) returns False"""
-    student = check50.py.import_("adult")
-    if student.is_adult(17) != False:
+    namespace = {}
+    exec(open("adult.py").read(), namespace)
+    result = namespace 
+    if not isinstance(result, bool):
+        raise check50.Failure("Function should return a boolean (True/False), not " + str(type(result)))
+    if result != False:
         raise check50.Failure("is_adult(17) should return False")
 
 @check50.check(function_defined)
-def over_18_returns_true():
+def test_equal_18():
     """is_adult(18) returns True"""
-    student = check50.py.import_("adult")
-    if student.is_adult(18) != True:
+    namespace = {}
+    exec(open("adult.py").read(), namespace)
+    result = namespace 
+    if not isinstance(result, bool):
+        raise check50.Failure("Function should return a boolean (True/False), not " + str(type(result)))
+    if result != True:
         raise check50.Failure("is_adult(18) should return True")
 
 @check50.check(function_defined)
-def older_returns_true():
+def test_above_18():
     """is_adult(30) returns True"""
-    student = check50.py.import_("adult")
-    if student.is_adult(30) != True:
-        raise check50.Failure("is_adult(30) should return True")
+    namespace = {}
+    exec(open("adult.py").read(), namespace)
+    r
