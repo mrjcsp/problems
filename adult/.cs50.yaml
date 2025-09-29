@@ -1,5 +1,2 @@
 check50:
   checks: tests/adult.py
-  files:
-    - !exclude "*"
-    - !include "adult.py"
