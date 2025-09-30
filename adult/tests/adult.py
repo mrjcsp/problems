@@ -20,7 +20,7 @@ def test_under_18():
     exec(open("adult.py").read(), namespace)
     result = namespace 
     if not isinstance(result, bool):
-        raise check50.Failure("Function should return a boolean (True/False), not " + str(type(result)))
+        raise check50.Failure(f"Function should return a boolean (True/False), not {type(result)}")
     if result != False:
         raise check50.Failure("is_adult(17) should return False")
 
@@ -31,7 +31,7 @@ def test_equal_18():
     exec(open("adult.py").read(), namespace)
     result = namespace 
     if not isinstance(result, bool):
-        raise check50.Failure("Function should return a boolean (True/False), not " + str(type(result)))
+        raise check50.Failure(f"Function should return a boolean (True/False), not {type(result)}")
     if result != True:
         raise check50.Failure("is_adult(18) should return True")
 
@@ -40,4 +40,8 @@ def test_above_18():
     """is_adult(30) returns True"""
     namespace = {}
     exec(open("adult.py").read(), namespace)
-    r
+    result = namespace 
+    if not isinstance(result, bool):
+        raise check50.Failure(f"Function should return a boolean (True/False), not {type(result)}")
+    if result != True:
+        raise check50.Failure("is_adult(30) should return True")
