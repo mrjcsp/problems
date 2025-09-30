@@ -1,7 +1,5 @@
 import check50
 import sys
-import io
-from contextlib import redirect_stdout
 
 @check50.check()
 def exists():
@@ -10,112 +8,88 @@ def exists():
 
 @check50.check(exists)
 def test_first_largest():
-    """print_largest(10, 5, 3) prints 10"""
+    """largest(10, 5, 3) returns 10"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(10, 5, 3)
-    output = f.getvalue().strip()
+    result = largest.largest(10, 5, 3)
     
-    if output != "10":
-        raise check50.Failure(f"Expected '10', got '{output}'")
+    if result != 10:
+        raise check50.Failure(f"Expected 10, got {result}")
 
 @check50.check(exists)
 def test_second_largest():
-    """print_largest(5, 20, 8) prints 20"""
+    """largest(5, 20, 8) returns 20"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(5, 20, 8)
-    output = f.getvalue().strip()
+    result = largest.largest(5, 20, 8)
     
-    if output != "20":
-        raise check50.Failure(f"Expected '20', got '{output}'")
+    if result != 20:
+        raise check50.Failure(f"Expected 20, got {result}")
 
 @check50.check(exists)
 def test_third_largest():
-    """print_largest(3, 7, 15) prints 15"""
+    """largest(3, 7, 15) returns 15"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(3, 7, 15)
-    output = f.getvalue().strip()
+    result = largest.largest(3, 7, 15)
     
-    if output != "15":
-        raise check50.Failure(f"Expected '15', got '{output}'")
+    if result != 15:
+        raise check50.Failure(f"Expected 15, got {result}")
 
 @check50.check(exists)
 def test_all_equal():
-    """print_largest(5, 5, 5) prints 5"""
+    """largest(5, 5, 5) returns 5"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(5, 5, 5)
-    output = f.getvalue().strip()
+    result = largest.largest(5, 5, 5)
     
-    if output != "5":
-        raise check50.Failure(f"Expected '5', got '{output}'")
+    if result != 5:
+        raise check50.Failure(f"Expected 5, got {result}")
 
 @check50.check(exists)
 def test_two_equal_largest():
-    """print_largest(10, 10, 3) prints 10"""
+    """largest(10, 10, 3) returns 10"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(10, 10, 3)
-    output = f.getvalue().strip()
+    result = largest.largest(10, 10, 3)
     
-    if output != "10":
-        raise check50.Failure(f"Expected '10', got '{output}'")
+    if result != 10:
+        raise check50.Failure(f"Expected 10, got {result}")
 
 @check50.check(exists)
 def test_negative_numbers():
-    """print_largest(-5, -2, -10) prints -2"""
+    """largest(-5, -2, -10) returns -2"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(-5, -2, -10)
-    output = f.getvalue().strip()
+    result = largest.largest(-5, -2, -10)
     
-    if output != "-2":
-        raise check50.Failure(f"Expected '-2', got '{output}'")
+    if result != -2:
+        raise check50.Failure(f"Expected -2, got {result}")
 
 @check50.check(exists)
 def test_mixed_positive_negative():
-    """print_largest(-10, 0, 5) prints 5"""
+    """largest(-10, 0, 5) returns 5"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(-10, 0, 5)
-    output = f.getvalue().strip()
+    result = largest.largest(-10, 0, 5)
     
-    if output != "5":
-        raise check50.Failure(f"Expected '5', got '{output}'")
+    if result != 5:
+        raise check50.Failure(f"Expected 5, got {result}")
 
 @check50.check(exists)
 def test_zero_included():
-    """print_largest(0, 0, 0) prints 0"""
+    """largest(0, 0, 0) returns 0"""
     sys.path.insert(0, '.')
     import largest
     
-    f = io.StringIO()
-    with redirect_stdout(f):
-        largest.print_largest(0, 0, 0)
-    output = f.getvalue().strip()
+    result = largest.largest(0, 0, 0)
     
-    if output != "0":
-        raise check50.Failure(f"Expected '0', got '{output}'")
+    if result != 0:
+        raise check50.Failure(f"Expected 0, got {result}")
