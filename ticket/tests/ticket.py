@@ -16,12 +16,10 @@ def test_adult_weekday():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['John Doe', '25', 'Monday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '100' not in output:
@@ -34,12 +32,10 @@ def test_adult_weekend():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Jane Smith', '30', 'Saturday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '100' not in output:
@@ -52,12 +48,10 @@ def test_toddler_free():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Baby Smith', '2', 'Wednesday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue().lower()
         
         if not ('0' in output or 'free' in output):
@@ -70,12 +64,10 @@ def test_child_weekday():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Tommy Lee', '10', 'Tuesday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '50' not in output:
@@ -88,12 +80,10 @@ def test_child_weekend():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Sarah Johnson', '12', 'Sunday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '100' not in output:
@@ -106,12 +96,10 @@ def test_student_weekday():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Alex Brown', '17', 'Thursday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '50' not in output:
@@ -124,12 +112,10 @@ def test_freefriday_coupon():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Emma Davis', '8', 'Friday', 'FREEFRIDAY']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue().lower()
         
         if not ('0' in output or 'free' in output):
@@ -142,12 +128,10 @@ def test_freefriday_wrong_day():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Mike Wilson', '9', 'Monday', 'FREEFRIDAY']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '50' not in output:
@@ -160,12 +144,10 @@ def test_sunday10_coupon():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Lisa Garcia', '15', 'Sunday', 'SUNDAY10']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '90' not in output:
@@ -178,12 +160,10 @@ def test_sunday10_wrong_day():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Chris Martinez', '14', 'Wednesday', 'SUNDAY10']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '50' not in output:
@@ -196,12 +176,10 @@ def test_displays_name():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['TestName123', '25', 'Monday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if 'TestName123' not in output:
@@ -214,12 +192,10 @@ def test_displays_day():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['John Doe', '25', 'Wednesday', '']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if 'Wednesday' not in output and 'wednesday' not in output.lower():
@@ -232,12 +208,10 @@ def test_case_insensitive_coupon():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Test User', '10', 'Friday', 'freefriday']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue().lower()
         
         if not ('0' in output or 'free' in output):
@@ -250,12 +224,10 @@ def test_adult_not_affected_by_coupon():
     if 'ticket' in sys.modules:
         del sys.modules['ticket']
     
-    import ticket
-    
     with patch('builtins.input', side_effect=['Adult Test', '30', 'Friday', 'FREEFRIDAY']):
         f = io.StringIO()
         with redirect_stdout(f):
-            ticket.ticket()
+            import ticket
         output = f.getvalue()
         
         if '100' not in output:
