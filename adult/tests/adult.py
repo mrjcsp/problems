@@ -6,42 +6,62 @@ def exists():
     check50.exists("adult.py")
 
 @check50.check(exists)
-def function_defined():
-    """Defines function is_adult(age)"""
-    namespace = {}
-    exec(open("adult.py").read(), namespace)
-    if "is_adult" not in namespace or not callable(namespace["is_adult"]):
-        raise check50.Failure("Function 'is_adult' not defined")
+def imports():
+    """adult.py can be imported"""
+    check50.py.import_("adult.py")
 
-@check50.check(function_defined)
+@check50.check(imports)
+def test_exactly_18():
+    """is_adult(18) returns True"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(18)
+    if result != True:
+        raise check50.Failure(f"Expected True, got {result}")
+
+@check50.check(imports)
+def test_over_18():
+    """is_adult(25) returns True"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(25)
+    if result != True:
+        raise check50.Failure(f"Expected True, got {result}")
+
+@check50.check(imports)
 def test_under_18():
-    """is_adult(17) returns False (boolean)"""
-    namespace = {}
-    exec(open("adult.py").read(), namespace)
-    result = namespace 
-    if not isinstance(result, bool):
-        raise check50.Failure(f"is_adult(17) should return a boolean (True/False), not {type(result)}")
-    if result is not False:
-        raise check50.Failure("is_adult(17) should return False")
+    """is_adult(17) returns False"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(17)
+    if result != False:
+        raise check50.Failure(f"Expected False, got {result}")
 
-@check50.check(function_defined)
-def test_equal_18():
-    """is_adult(18) returns True (boolean)"""
-    namespace = {}
-    exec(open("adult.py").read(), namespace)
-    result = namespace 
-    if not isinstance(result, bool):
-        raise check50.Failure(f"is_adult(18) should return a boolean (True/False), not {type(result)}")
-    if result is not True:
-        raise check50.Failure("is_adult(18) should return True")
+@check50.check(imports)
+def test_zero():
+    """is_adult(0) returns False"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(0)
+    if result != False:
+        raise check50.Failure(f"Expected False, got {result}")
 
-@check50.check(function_defined)
-def test_above_18():
-    """is_adult(30) returns True (boolean)"""
-    namespace = {}
-    exec(open("adult.py").read(), namespace)
-    result = namespace 
-    if not isinstance(result, bool):
-        raise check50.Failure(f"is_adult(30) should return a boolean (True/False), not {type(result)}")
-    if result is not True:
-        raise check50.Failure("is_adult(30) should return True")
+@check50.check(imports)
+def test_very_young():
+    """is_adult(5) returns False"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(5)
+    if result != False:
+        raise check50.Failure(f"Expected False, got {result}")
+
+@check50.check(imports)
+def test_elderly():
+    """is_adult(100) returns True"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(100)
+    if result != True:
+        raise check50.Failure(f"Expected True, got {result}")
+
+@check50.check(imports)
+def test_just_under_18():
+    """is_adult(17.9) returns False"""
+    adult = check50.py.import_("adult.py")
+    result = adult.is_adult(17.9)
+    if result != False:
+        raise check50.Failure(f"Expected False, got {result}")
